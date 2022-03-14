@@ -10,7 +10,7 @@
 int main() {
 
     double A[SIZE][SIZE], x[SIZE], y[SIZE];
-    double fTimeStart, fTimeEnd;
+    double start, end;
     double eps = 0.0000000001;
     double lambda = 0;
     double lambda0 = lambda + 2*eps;
@@ -38,7 +38,7 @@ int main() {
 
 
 
-    fTimeStart = omp_get_wtime();
+    start = omp_get_wtime();
 
     while ((k < M) && (fabs(lambda0 - lambda) > eps)) {
 
@@ -79,9 +79,9 @@ int main() {
         printf("\nCONVERGED IN %d ITERATIONS\n", k);
     }
 
-    fTimeEnd = omp_get_wtime();
+    end = omp_get_wtime();
 
-    printf("Wall clock time: %.20f\n",fTimeEnd - fTimeStart);
+    printf("Wall clock time: %.20f\n",end - start);
 
     return 0;
 
