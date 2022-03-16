@@ -5,7 +5,7 @@
 
 #define SIZE 3
 
-double power_method(double A[SIZE][SIZE], double x[SIZE], double y[SIZE], double max_iter) {
+double power_method(double** A, double* x, double* y, double max_iter) {
 
     double start, end;
     double eps = 0.0000000001;
@@ -61,36 +61,5 @@ double power_method(double A[SIZE][SIZE], double x[SIZE], double y[SIZE], double
     printf("Wall clock time: %.20f\n",end - start);
 
     return lambda;
-
-
-}
-
-
-int main() {
-
-    double A[SIZE][SIZE], x[SIZE], y[SIZE];
-    int i, j;
-    
-
-    for (i=0;i<SIZE;i++) {
-        for (j=0;j<SIZE;j++) {
-            x[j] = 1.0;
-            y[j] = 0.0;
-        }
-    }
-
-    A[0][0] = 1;
-    A[0][1] = 1;
-    A[0][2] = 1;
-    A[1][0] = 1;
-    A[1][1] = 11;
-    A[1][2] = 1;
-    A[2][0] = 1;
-    A[2][1] = 1;
-    A[2][2] = 1;
-
-    double lambda = power_method(A, x, y, 100);
-
-    return 0;
 
 }
