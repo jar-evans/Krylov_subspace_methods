@@ -63,3 +63,45 @@ double power_method(double** A, double* x, double* y, double max_iter) {
     return lambda;
 
 }
+
+double arnoldi_method(double** A, double* b, int N, double max_iter) {
+
+    int length = len(b)
+    double H[N+1][N];
+    double Q[length][N];
+    double v[length];
+
+    Q[0] = b/(norm(b));
+
+    for (int k = 1; k < N+1; k ++) {
+
+        for (int i=0; i < length; i++) {
+            v[i] = 0;
+            for (int j = 0; j < length; j++)
+                    v[i] = v[i] + (A[i][j]*Q[k-1][j]);}
+
+        for (j = 0; j < k; k ++) {
+            for (i=0; i < length; i++) {
+                H[j][k-1] = H[j][k-1] + Q[j][i] *v[i];}
+
+            for (i=0; i < length; i++) {
+                v[i] = v[i] - Q[j][i]*H[j][k-1];}
+        }
+
+        H[k][k-1] = norm(v);
+
+        if (H[k][k-1] > eps) {
+            for (i=0; i < length; i++) {
+                Q[k][i] = v[i]/H[k][k-1];
+        }
+        else {
+            return Q, H;
+        }
+    }
+    return Q, H;
+
+    }
+}
+
+
+double norm() {};
