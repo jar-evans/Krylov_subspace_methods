@@ -303,8 +303,8 @@ Matrix<T> arnoldi(const Matrix<T> A, int N)
 
     Vector<T> r = q;
 
-    Matrix<T> H(N+1, N);
-    Matrix<T> Q(n, N+1);
+    Matrix<T> H(N + 1, N);
+    Matrix<T> Q(n, N + 1);
 
     for (int k = 0; k < n; k++)
     {
@@ -327,7 +327,7 @@ Matrix<T> arnoldi(const Matrix<T> A, int N)
             }
 
             H(j, i) = dot(q, r);
-            
+
             r = r - q * H(j, i);
         }
 
@@ -344,13 +344,41 @@ Matrix<T> arnoldi(const Matrix<T> A, int N)
 
         for (int k = 0; k < n; k++)
         {
-            Q(k, i+1) = r[k] / b;
+            Q(k, i + 1) = r[k] / b;
         }
-
-
     }
 
-    return Q;//, H;
+    return Q; //, H;
+}
+
+template <typename T, typename U>
+typename std::common_type<T, U>::type
+power(const Matrix<T> A, Vector<U> q_old, int N)
+{
+    Vector<typename std::common_type<T, U>::type> z(A.cols());
+    auto q = q_old;
+
+    typename std::common_type<T, U>::type lambda;
+    typename std::common_type<T, U>::type lambda_old;
+
+    lambda = 0;
+
+    for (int k = 0; k < N; k++)
+    {
+
+        lambda_old = lambda;
+
+        z = mult(A, q_old);
+        q = z / z.norm();
+        lambda = dot(q_old, z);
+        q_old = q;
+
+        if (fabs(lambda - lambda_old) < 1e-8) {
+            return lambda;
+        }
+    }
+
+    return lambda;
 }
 
 int main()
@@ -358,7 +386,7 @@ int main()
 
     Matrix<double> A(3, 3);
 
-    A(0, 0) = 2;
+    A(0, 0) = 12;
     A(1, 0) = 0;
     A(2, 0) = 0;
     A(0, 1) = 0;
@@ -368,7 +396,16 @@ int main()
     A(1, 2) = 1;
     A(2, 2) = 2;
 
-    auto idk = arnoldi(A, 7);
+    Vector<double> b(3);
+    b[0] = 1;
+    b[1] = 1;
+    b[2] = 1;
+
+    // auto idk = arnoldi(A, 7);
+
+    double a = power(A, b / b.norm(), 100);
+
+    std::cout << a << std::endl;
 
     // idk.print();
 }
