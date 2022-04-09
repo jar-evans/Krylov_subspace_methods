@@ -14,3 +14,12 @@ Methods making use of these subspaces are most effective for large sparse matric
 ## Bi-Lanczos method
 
 ## Arnoldi method
+
+
+## Sources
+
+B.N. Parlett. The Symmetric Eigenvalue Problem. Classics in Applied Mathematics 20. SIAM, Philadelphia, 1998
+
+Yousef Saad, Numerical Methods for Large Eigenvalue Problems, Manchester University Press, 1992.
+
+D.V. Fedorov. Yet Another Introduction to Numerical Methods. https://phys.au.dk/~fedorov/Numeric/Book/book.pdf, 2013
