@@ -9,11 +9,11 @@ Methods making use of these subspaces are most effective for large sparse matric
 
 ### Orthogonal iteration
 
-## Lanczos method
+## Lanczos iteration
 
-## Bi-Lanczos method
+## Bi-Lanczos iteration
 
-## Arnoldi method
+## Arnoldi iteration
 
 
 ## Sources
