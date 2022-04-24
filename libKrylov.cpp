@@ -1,6 +1,7 @@
 #include <cmath>
 #include <iostream>
 #include <cassert>
+#include <omp.h>
 
 #include "Vector.h"
 #include "Matrix.h"
@@ -10,25 +11,45 @@ typename std::common_type<T, U>::type
 dot(const Vector<T> &lhs,
     const Vector<U> &rhs)
 {
+    int i;
+    int M = lhs.len();
+
     typename std::common_type<T, U>::type sum = 0;
 
-    for (auto i = 0; i < lhs.len(); i++)
-        sum = sum + (lhs[i] * rhs[i]);
+    #pragma omp parallel for private(i) reduction(+ : sum)
+    for (i = 0; i < M; i++)
+    {
+        sum += (lhs[i] * rhs[i]);
+    }
     return sum;
 }
- 
+
 template <typename T, typename U>
 auto mult(const Matrix<T> &lhs,
           const Vector<U> &rhs)
 {
-    Vector<typename std::common_type<T, U>::type> sum(lhs.cols());
 
-    for (int i = 0; i < lhs.rows(); i++)
+    int i, j;
+
+    int M = lhs.cols();
+    int N = lhs.rows();
+
+    Vector<typename std::common_type<T, U>::type> sum(M);
+
+    #pragma omp parallel private(i, j)
     {
-        for (int j = 0; j < lhs.cols(); j++)
+    #pragma omp for schedule(static)
+    for (int i = 0; i < N; i++)
+    {
+        #pragma omp parallel shared(sum, lhs, rhs)
+        {
+        #pragma omp for schedule(static)
+        for (int j = 0; j < M; j++)
         {
             sum[i] = sum[i] + (lhs(i, j) * rhs[j]);
         }
+        }
+    }
     }
     return sum;
 }
@@ -171,7 +192,8 @@ power(const Matrix<T> A, Vector<U> q_old, int N)
         lambda = dot(q_old, z);
         q_old = q;
 
-        if (fabs(lambda - lambda_old) < 1e-8) {
+        if (fabs(lambda - lambda_old) < 1e-8)
+        {
             return lambda;
         }
     }

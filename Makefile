@@ -11,11 +11,10 @@ libKrylov.so: libKrylov.o
 
 test: test.cpp
 	make all
-	g++ test.cpp -o $@
+	g++ test.cpp -o $@ -fopenmp
 	./$@
-	make clean
 
 $(OBJS): Makefile
 
 clean:
-	rm *.o *.so *.out *
+	rm *.o *.so

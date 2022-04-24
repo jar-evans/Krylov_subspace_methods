@@ -1,12 +1,11 @@
 #include <iostream>
 #include "libKrylov.cpp"
 
-
 int main()
 {
-  
+
     Matrix<double> A(3, 3);
-   
+
     A(0, 0) = 12;
     A(1, 0) = 0;
     A(2, 0) = 0;
@@ -22,11 +21,9 @@ int main()
     b[1] = 1;
     b[2] = 1;
 
-    // auto idk = arnoldi(A, 7);
+    double start = omp_get_wtime();
+    auto a = power(A, b / b.norm(), 3);
+    double end = omp_get_wtime();
 
-    double a = power(A, b / b.norm(), 3);
-
-    std::cout << a << std::endl;
-
-    // idk.print();
+    std::cout << a << " in " << end - start << " [s]" << std::endl;
 }
